@@ -1,0 +1,39 @@
+:root {
+  --primary-color: #D4AF37;
+  /* Royal Gold */
+  --secondary-color: #AA8C2C;
+  /* Darker Gold */
+  --text-dark: #f3f4f6;
+  /* Light text for dark bg */
+  --text-light: #1f2937;
+  /* Dark text for light bg (if any) */
+  --bg-light: #000000;
+  /* Main bg is now Black */
+  --bg-dark: #111111;
+  /* Slightly lighter black for contrast */
+  --nav-bg: rgba(0, 0, 0, 0.9);
+  --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}

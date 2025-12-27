@@ -1,0 +1,241 @@
+.services-container {
+    padding: 100px 5%;
+    background-color: var(--bg-light);
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.subsection-title {
+    text-align: left;
+    font-size: 2rem;
+    margin: 4rem 0 2rem 0;
+    color: var(--text-dark);
+    border-left: 5px solid var(--primary-color);
+    padding-left: 15px;
+    margin-left: 10px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    background-color: var(--bg-dark);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    border-color: var(--primary-color);
+}
+
+/* Laptop Preview UI */
+.laptop-preview-container {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.laptop-screen {
+    width: 90%;
+    aspect-ratio: 16/10;
+    background-color: #000;
+    border: 8px solid #333;
+    /* Laptop bezel */
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.service-preview-swiper {
+    width: 100%;
+    height: 100%;
+}
+
+/* Camera dot */
+.laptop-screen::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    /* Inside top bezel actually, but simpler to fake it */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #555;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.screen-content {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 5s linear;
+    /* Smooth scroll effect on hover? Optional */
+}
+
+.service-card:hover .screen-content {
+    transform: scale(1.05);
+}
+
+.laptop-base {
+    width: 100%;
+    height: 12px;
+    background: #444;
+    /* Laptop base color */
+    border-radius: 0 0 10px 10px;
+    position: relative;
+}
+
+/* Trackpad notch */
+.laptop-base::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25%;
+    height: 4px;
+    background: #333;
+    border-radius: 0 0 4px 4px;
+}
+
+.card-content {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.desc {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #ccc;
+    min-height: 3rem;
+    /* Align heights */
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    width: 100%;
+    padding-left: 1rem;
+}
+
+.feature-list li {
+    margin-bottom: 0.5rem;
+    color: #eee;
+    display: flex;
+    align-items: center;
+}
+
+.feature-list li::before {
+    content: '✓';
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.price-tag {
+    margin-bottom: 1.5rem;
+    margin-top: auto;
+    /* Push price to bottom */
+}
+
+.starting-at {
+    display: block;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.original-price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 1.1rem;
+}
+
+.discount-badge {
+    background-color: var(--primary-color);
+    color: #000;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.service-btn {
+    padding: 10px 30px;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.service-btn:hover {
+    background: var(--primary-color);
+    color: #000;
+}
+
+.service-btn:disabled {
+    border-color: #555;
+    color: #555;
+    cursor: not-allowed;
+    background: transparent;
+}
