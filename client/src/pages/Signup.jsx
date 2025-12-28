@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import './Signup.css';
 
@@ -27,27 +28,33 @@ const Signup = () => {
             return;
         }
 
+        // ✅ PERFECT! VITE VARIABLE USAGE
+        const API_URL = import.meta.env.VITE_API_URL;
+
         try {
-            const res = await fetch('http://localhost:5000/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, email, password, role })
+            // 👇👇 AXIOS FIX START 👇👇
+            // Axios la direct-a object anuppalam, JSON.stringify theva illa.
+            const res = await axios.post(`${API_URL}/api/auth/register`, {
+                name,
+                email,
+                password,
+                role
             });
 
-            const data = await res.json();
-
-            if (res.ok) {
-                localStorage.setItem('token', data.token);
+            // Axios success aana mattum dhaan inga varum.
+            // Response data 'res.data' kulla irukkum. 'res.json()' theva illa.
+            if (res.data) {
+                localStorage.setItem('token', res.data.token);
                 toast.success('Account Created Successfully');
                 navigate('/');
-            } else {
-                toast.error(data.msg || 'Registration Failed');
             }
+            // 👆👆 AXIOS FIX END 👆👆
+
         } catch (err) {
             console.error(err);
-            toast.error('Server Error');
+            // Axios error response ah 'err.response.data' la tharum
+            const errorMessage = err.response?.data?.msg || 'Registration Failed';
+            toast.error(errorMessage);
         }
     };
 
