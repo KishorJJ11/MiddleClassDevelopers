@@ -218,12 +218,15 @@ router.post('/verify-email', async (req, res) => {
 // Forgot Password - Generate & Send OTP
 router.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
+    console.log(`Forgot Password requested for: ${email}`); // Log 1
 
     try {
         const user = await User.findOne({ email });
         if (!user) {
+            console.log('User not found'); // Log 2
             return res.status(404).json({ msg: 'User not found' });
         }
+        console.log('User found, generating OTP...'); // Log 3
 
         // Generate 6 digit OTP
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -233,6 +236,7 @@ router.post('/forgot-password', async (req, res) => {
         user.otp = await bcrypt.hash(otp, salt);
         user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 Minutes
         await user.save();
+        console.log('OTP generated and saved to DB'); // Log 4
 
         const message = `
             <h1>Password Reset Request</h1>
@@ -241,21 +245,23 @@ router.post('/forgot-password', async (req, res) => {
         `;
 
         try {
+            console.log('Calling sendEmail...'); // Log 5
             await sendEmail({
                 email: user.email,
                 subject: 'MCDevs Password Reset OTP',
                 message
             });
+            console.log('Email sent successfully (Route Handler)'); // Log 6
             res.status(200).json({ msg: 'OTP sent to email' });
         } catch (err) {
-            console.error(err);
+            console.error('Email sending failed in route:', err); // Log Error
             user.otp = undefined;
             user.otpExpires = undefined;
             await user.save();
             return res.status(500).json({ msg: 'Email could not be sent' });
         }
     } catch (err) {
-        console.error(err.message);
+        console.error('Server Error in forgot-password:', err.message);
         res.status(500).send('Server Error');
     }
 });
