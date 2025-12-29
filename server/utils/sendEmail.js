@@ -6,16 +6,16 @@ const sendEmail = async (options) => {
 
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+        port: 587, // Try port 587 (TLS) instead of 465 (SSL)
+        secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
         },
         // Detailed timeouts to prevent hanging
-        connectionTimeout: 10000, // 10s
-        greetingTimeout: 5000,    // 5s
-        socketTimeout: 20000      // 20s
+        connectionTimeout: 10000,
+        greetingTimeout: 5000,
+        socketTimeout: 20000
     });
 
     try {
