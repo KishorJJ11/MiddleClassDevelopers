@@ -1,37 +1,45 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
-    console.log('Sending Email via Brevo...');
-    console.log('User Env:', process.env.EMAIL_USER ? `"${process.env.EMAIL_USER.substring(0, 3)}***" (len: ${process.env.EMAIL_USER.length})` : 'MISSING');
-    console.log('Pass Env:', process.env.EMAIL_PASS ? `"${process.env.EMAIL_PASS.substring(0, 3)}***" (len: ${process.env.EMAIL_PASS.length})` : 'MISSING');
+    console.log('Sending Email via Brevo API (HTTP)...');
 
-    const transporter = nodemailer.createTransport({
-        host: 'smtp-relay.brevo.com', // Brevo (Sendinblue) SMTP Host
-        port: 2525, // Port 2525 is whitelisted by Render
-        secure: false, // Port 2525 uses STARTTLS
-        auth: {
-            user: process.env.EMAIL_USER, // Your Brevo Login Email
-            pass: process.env.EMAIL_PASS  // Your Brevo SMTP Key
-        },
-        tls: {
-            rejectUnauthorized: false
-        },
-        connectionTimeout: 10000
-    });
+    // Check for API Key (Starts with xkeysib...)
+    const apiKey = process.env.EMAIL_PASS;
+    console.log('API Key Env:', apiKey ? `"${apiKey.substring(0, 5)}***" (len: ${apiKey.length})` : 'MISSING');
 
-    const mailOptions = {
-        from: `MCDevs Support <${process.env.EMAIL_USER}>`, // Must be a verified sender in Brevo
-        to: options.email,
+    if (!apiKey || !apiKey.startsWith('xkeysib-')) {
+        console.warn('WARNING: Brevo API Key should start with "xkeysib-". Check your credentials.');
+    }
+
+    const url = 'https://api.brevo.com/v3/smtp/email';
+
+    const body = {
+        sender: { email: process.env.EMAIL_USER, name: 'MCDevs Support' },
+        to: [{ email: options.email }],
         subject: options.subject,
-        html: options.message
+        htmlContent: options.message
     };
 
-    console.log('Transporter created, sending mail now...');
     try {
-        let info = await transporter.sendMail(mailOptions);
-        console.log('Email sent: ' + info.response);
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'api-key': apiKey,
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData)}`);
+        }
+
+        const data = await response.json();
+        console.log('Email sent successfully via API:', data);
     } catch (error) {
-        console.error('SendMail Error:', error);
+        console.error('Brevo API Failed:', error.message);
         throw error;
     }
 };
