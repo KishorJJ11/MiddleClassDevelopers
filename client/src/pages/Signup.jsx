@@ -17,6 +17,11 @@ const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    // Missing States Added
+    const [step, setStep] = useState(1);
+    const [otp, setOtp] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const { name, email, password, confirmPassword, role } = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -28,11 +33,9 @@ const Signup = () => {
             return;
         }
 
-
-
+        setLoading(true); // Start loading
         try {
-            // 👇👇 AXIOS FIX START 👇👇
-            // Axios la direct-a object anuppalam, JSON.stringify theva illa.
+            // Register route sends OTP now
             const res = await axios.post('/api/auth/register', {
                 name,
                 email,
@@ -40,20 +43,35 @@ const Signup = () => {
                 role
             });
 
-            // Axios success aana mattum dhaan inga varum.
-            // Response data 'res.data' kulla irukkum. 'res.json()' theva illa.
             if (res.data) {
-                localStorage.setItem('token', res.data.token);
-                toast.success('Account Created Successfully');
-                navigate('/');
+                toast.success('Verification Code Sent to Email!');
+                setStep(2); // Move to OTP step
             }
-            // 👆👆 AXIOS FIX END 👆👆
-
         } catch (err) {
             console.error(err);
-            // Axios error response ah 'err.response.data' la tharum
             const errorMessage = err.response?.data?.msg || 'Registration Failed';
             toast.error(errorMessage);
+        } finally {
+            setLoading(false); // Stop loading regardless of success/fail
+        }
+    };
+
+    // OTP Verification Handler
+    const handleOtpVerify = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const res = await axios.post('/api/auth/verify-email', { email, otp });
+            if (res.data) {
+                localStorage.setItem('token', res.data.token);
+                toast.success('Email Verified! Login Successful.');
+                navigate('/track-project'); // Redirect to dashboard
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(err.response?.data?.msg || 'Verification Failed');
+        } finally {
+            setLoading(false);
         }
     };
 
