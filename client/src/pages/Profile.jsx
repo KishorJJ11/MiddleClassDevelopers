@@ -34,7 +34,7 @@ const Profile = () => {
             }
 
             try {
-                const res = await fetch('http://localhost:5000/api/auth/user', {
+                const res = await fetch('/api/auth/user', {
                     headers: {
                         'x-auth-token': token
                     }
@@ -75,7 +75,7 @@ const Profile = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/auth/update-profile', {
+            const res = await fetch('/api/auth/update-profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const Profile = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch('http://localhost:5000/api/auth/change-password', {
+            const res = await fetch('/api/auth/change-password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
