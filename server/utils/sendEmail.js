@@ -7,15 +7,17 @@ const sendEmail = async (options) => {
     console.log('Pass Env:', process.env.EMAIL_PASS ? 'LOADED' : 'MISSING');
 
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // Must be false for port 587
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
         },
-        // Prevent hanging
-        connectionTimeout: 10000,
-        greetingTimeout: 5000,
-        socketTimeout: 10000
+        tls: {
+            rejectUnauthorized: false // Helps with some cloud SSL issues
+        },
+        connectionTimeout: 60000 // 60s - Give it time
     });
 
     // Removed verify() to avoid extra blocking step
