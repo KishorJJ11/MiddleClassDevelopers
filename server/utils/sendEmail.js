@@ -1,24 +1,24 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
-    // console.log('Attempting to send email...'); // Optional: Keep or remove
-
+    // Log masked credentials to verify they are loaded
+    console.log('Sending Email...');
+    console.log('User Env:', process.env.EMAIL_USER ? `${process.env.EMAIL_USER.substring(0, 3)}***` : 'MISSING');
+    console.log('Pass Env:', process.env.EMAIL_PASS ? 'LOADED' : 'MISSING');
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
-        }
+        },
+        // Prevent hanging
+        connectionTimeout: 10000,
+        greetingTimeout: 5000,
+        socketTimeout: 10000
     });
 
-    try {
-        await transporter.verify();
-        console.log('SMTP Connection Established');
-    } catch (error) {
-        console.error('SMTP Connection Failed:', error);
-        throw error;
-    }
+    // Removed verify() to avoid extra blocking step
 
     const mailOptions = {
         from: `MCDevs Support <${process.env.EMAIL_USER}>`,
@@ -27,8 +27,14 @@ const sendEmail = async (options) => {
         html: options.message
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log('Email Sent Successfully');
+    console.log('Transporter created, sending mail now...');
+    try {
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+    } catch (error) {
+        console.error('SendMail Error:', error);
+        throw error; // Rethrow to be caught by controller
+    }
 };
 
 module.exports = sendEmail;
