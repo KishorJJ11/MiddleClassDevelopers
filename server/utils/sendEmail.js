@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
     console.log('Sending Email via Brevo...');
-    console.log('User Env:', process.env.EMAIL_USER ? 'LOADED' : 'MISSING');
-    console.log('Pass Env:', process.env.EMAIL_PASS ? 'LOADED' : 'MISSING');
+    console.log('User Env:', process.env.EMAIL_USER ? `"${process.env.EMAIL_USER.substring(0, 3)}***" (len: ${process.env.EMAIL_USER.length})` : 'MISSING');
+    console.log('Pass Env:', process.env.EMAIL_PASS ? `"${process.env.EMAIL_PASS.substring(0, 3)}***" (len: ${process.env.EMAIL_PASS.length})` : 'MISSING');
 
     const transporter = nodemailer.createTransport({
         host: 'smtp-relay.brevo.com', // Brevo (Sendinblue) SMTP Host
