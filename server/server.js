@@ -13,8 +13,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use((req, res, next) => {
-  console.log(`Path: ${req.path} | Method: ${req.method}`);
-  next();
+    console.log(`Path: ${req.path} | Method: ${req.method}`);
+    next();
 });
 
 // Database Connection
@@ -27,6 +27,7 @@ const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/notifications', require('./routes/notification'));
+app.use('/api/projects', require('./routes/project'));
 
 app.get('/', (req, res) => {
     res.send('MCDevs API Running');

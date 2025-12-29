@@ -19,24 +19,34 @@ const Navbar = () => {
   useEffect(() => {
     const checkUser = async () => {
       const token = localStorage.getItem('token');
-      setIsLoggedIn(!!token);
-
       if (token) {
         try {
           const res = await fetch('/api/auth/user', {
             headers: { 'x-auth-token': token }
           });
-          const data = await res.json();
-          if (data.email === 'kishorjj05@gmail.com') {
-            setIsAdmin(true);
+
+          if (res.ok) {
+            const data = await res.json();
+            setIsLoggedIn(true);
+            if (data.email === 'kishorjj05@gmail.com') {
+              setIsAdmin(true);
+            } else {
+              setIsAdmin(false);
+            }
           } else {
+            // Token invalid or expired
+            localStorage.removeItem('token');
+            setIsLoggedIn(false);
             setIsAdmin(false);
           }
         } catch (err) {
           console.error(err);
+          localStorage.removeItem('token');
+          setIsLoggedIn(false);
           setIsAdmin(false);
         }
       } else {
+        setIsLoggedIn(false);
         setIsAdmin(false);
       }
     };
@@ -44,6 +54,16 @@ const Navbar = () => {
     checkUser();
     setClick(false); // Close mobile menu on navigation
   }, [location]);
+
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (click) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [click]);
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -75,12 +95,7 @@ const Navbar = () => {
         </Link>
 
         <div className="mobile-icons-container">
-          {/* Profile Icon for Mobile/Tablet (Visible next to Hamburger if logged in) */}
-          {isLoggedIn && (
-            <Link to="/profile" className="nav-profile-mobile" onClick={closeMobileMenu}>
-              <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile" className="profile-icon-nav" />
-            </Link>
-          )}
+          {/* Profile Icon removed from header, moved to menu */}
           <div className="menu-icon" onClick={handleClick}>
             {click ? <FaTimes /> : <FaBars />}
           </div>
@@ -113,6 +128,11 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="nav-item">
+            <Link to="/track-project" className="nav-links" onClick={closeMobileMenu}>
+              Track Status
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link to="/contact" className="nav-links" onClick={closeMobileMenu}>
               Contact
             </Link>
@@ -124,6 +144,17 @@ const Navbar = () => {
               </Link>
             </li>
           )}
+
+          {isLoggedIn && (
+            <li className="nav-item-mobile">
+              <Link to="/profile" className="nav-links-mobile" onClick={closeMobileMenu}>
+                My Account
+              </Link>
+            </li>
+          )}
+
+
+
           <li className="nav-item-mobile">
             {isLoggedIn ? (
               <span className="nav-links-mobile" onClick={handleLogout}>

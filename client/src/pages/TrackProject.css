@@ -1,0 +1,254 @@
+/* Track Project Page Styles */
+.track-project-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    padding: 100px 20px 40px;
+}
+
+.track-project-content {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    animation: fadeIn 0.8s ease-out;
+}
+
+.track-title {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.track-subtitle {
+    color: #ccc;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+
+.tracking-input-group {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.tracking-input-main {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.tracking-input-main:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.track-btn-main {
+    padding: 1rem 3rem;
+    background: var(--primary-color);
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.track-btn-main:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Status Card Styles */
+.status-result-card {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideUp 0.5s ease-out;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.result-header h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.client-id {
+    color: var(--primary-color);
+    font-family: monospace;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.status-badge-large {
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.status-badge-large.pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid #ffc107;
+}
+
+.status-badge-large.planning {
+    background: rgba(23, 162, 184, 0.2);
+    color: #17a2b8;
+    border: 1px solid #17a2b8;
+}
+
+.status-badge-large.development {
+    background: rgba(0, 123, 255, 0.2);
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.status-badge-large.completed {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.project-details {
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+}
+
+.progress-section {
+    margin-bottom: 2.5rem;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 6px;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    animation: shimmer 2s infinite;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.meta-box h4 {
+    color: #888;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.meta-box p {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .tracking-input-group {
+        flex-direction: column;
+    }
+
+    .track-btn-main {
+        width: 100%;
+    }
+
+    .result-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

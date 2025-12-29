@@ -24,6 +24,7 @@ const Profile = () => {
 
     const { currentPassword, newPassword, confirmNewPassword } = passwordData;
 
+
     useEffect(() => {
         const fetchUser = async () => {
             const token = localStorage.getItem('token');
@@ -131,6 +132,8 @@ const Profile = () => {
             toast.error('Server Error');
         }
     };
+
+
 
     if (!user) return <div className="profile-container">Loading...</div>;
 
@@ -240,6 +243,8 @@ const Profile = () => {
 
                 <button onClick={handleLogout} className="logout-btn">Logout</button>
             </div>
+
+
         </div>
     );
 };
