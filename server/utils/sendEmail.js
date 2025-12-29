@@ -1,4 +1,4 @@
-```javascript
+
 const nodemailer = require('nodemailer');
 const dns = require('dns');
 const util = require('util');
@@ -7,7 +7,7 @@ const lookup = util.promisify(dns.lookup);
 const sendEmail = async (options) => {
     // Log masked credentials
     console.log('Sending Email...');
-    console.log('User Env:', process.env.EMAIL_USER ? `${ process.env.EMAIL_USER.substring(0, 3) }*** ` : 'MISSING');
+    console.log('User Env:', process.env.EMAIL_USER ? `${process.env.EMAIL_USER.substring(0, 3)}*** ` : 'MISSING');
     console.log('Pass Env:', process.env.EMAIL_PASS ? 'LOADED' : 'MISSING');
 
     let smtpHost = 'smtp.gmail.com';
@@ -21,9 +21,9 @@ const sendEmail = async (options) => {
     }
 
     const transporter = nodemailer.createTransport({
-        host: smtpHost, 
+        host: smtpHost,
         port: 587,
-        secure: false, 
+        secure: false,
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
@@ -38,7 +38,7 @@ const sendEmail = async (options) => {
     // Removed verify() to avoid extra blocking step
 
     const mailOptions = {
-        from: `MCDevs Support < ${ process.env.EMAIL_USER }> `,
+        from: `MCDevs Support < ${process.env.EMAIL_USER}> `,
         to: options.email,
         subject: options.subject,
         html: options.message
