@@ -22,8 +22,8 @@ const sendEmail = async (options) => {
 
     const transporter = nodemailer.createTransport({
         host: smtpHost,
-        port: 465, // Trying SSL method
-        secure: true, // Must be true for 465
+        port: 587, // Port 587 is often more reliable on cloud than 465
+        secure: false, // Must be false for 587
         auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
@@ -32,7 +32,7 @@ const sendEmail = async (options) => {
             servername: 'smtp.gmail.com', // Necessary when using IP address
             rejectUnauthorized: false
         },
-        connectionTimeout: 20000 // 20s
+        connectionTimeout: 15000 // 15s timeout
     });
 
     // Removed verify() to avoid extra blocking step
