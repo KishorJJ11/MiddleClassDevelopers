@@ -1,44 +1,26 @@
-
 const nodemailer = require('nodemailer');
-const dns = require('dns');
-const util = require('util');
-const lookup = util.promisify(dns.lookup);
 
 const sendEmail = async (options) => {
-    // Log masked credentials
-    console.log('Sending Email...');
-    console.log('User Env:', process.env.EMAIL_USER ? `${process.env.EMAIL_USER.substring(0, 3)}*** ` : 'MISSING');
+    console.log('Sending Email via Brevo...');
+    console.log('User Env:', process.env.EMAIL_USER ? 'LOADED' : 'MISSING');
     console.log('Pass Env:', process.env.EMAIL_PASS ? 'LOADED' : 'MISSING');
 
-    let smtpHost = 'smtp.gmail.com';
-    try {
-        // Force IPv4 resolution (Fix for Render/Cloud IPv6 timeouts)
-        const ip = await lookup('smtp.gmail.com', { family: 4 });
-        console.log('Resolved Gmail IP (IPv4):', ip.address);
-        smtpHost = ip.address;
-    } catch (dnsErr) {
-        console.error('DNS Lookup Failed, defaulting to hostname:', dnsErr);
-    }
-
     const transporter = nodemailer.createTransport({
-        host: smtpHost,
-        port: 587, // Port 587 is often more reliable on cloud than 465
-        secure: false, // Must be false for 587
+        host: 'smtp-relay.brevo.com', // Brevo (Sendinblue) SMTP Host
+        port: 2525, // Port 2525 is whitelisted by Render
+        secure: false, // Port 2525 uses STARTTLS
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
+            user: process.env.EMAIL_USER, // Your Brevo Login Email
+            pass: process.env.EMAIL_PASS  // Your Brevo SMTP Key
         },
         tls: {
-            servername: 'smtp.gmail.com', // Necessary when using IP address
             rejectUnauthorized: false
         },
-        connectionTimeout: 15000 // 15s timeout
+        connectionTimeout: 10000
     });
 
-    // Removed verify() to avoid extra blocking step
-
     const mailOptions = {
-        from: `MCDevs Support < ${process.env.EMAIL_USER}> `,
+        from: `MCDevs Support <${process.env.EMAIL_USER}>`, // Must be a verified sender in Brevo
         to: options.email,
         subject: options.subject,
         html: options.message
@@ -50,7 +32,7 @@ const sendEmail = async (options) => {
         console.log('Email sent: ' + info.response);
     } catch (error) {
         console.error('SendMail Error:', error);
-        throw error; // Rethrow to be caught by controller
+        throw error;
     }
 };
 
