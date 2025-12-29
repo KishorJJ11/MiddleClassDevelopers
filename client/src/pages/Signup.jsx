@@ -61,70 +61,103 @@ const Signup = () => {
         <div className="signup-container">
             <div className="signup-card">
                 <div className="signup-header">
-                    <h2>Create Account</h2>
-                    <p>Join us to start your journey</p>
+                    <h2>{step === 1 ? 'Create Account' : 'Verify Email'}</h2>
+                    <p>{step === 1 ? 'Join us to start your journey' : `Enter code sent to ${email}`}</p>
                 </div>
-                <form className="signup-form" onSubmit={onSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Full Name</label>
-                        <input type="text" id="name" placeholder="Enter your full name" value={name} onChange={onChange} required />
-                    </div>
-                    <div className="form-group">
-                        <input type="email" id="email" placeholder="Enter your email" value={email} onChange={onChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="role">I am a...</label>
-                        <select id="role" value={role} onChange={onChange} className="role-select">
-                            <option value="Client">Client</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Developer">Developer</option>
-                            <option value="Marketing Team">Marketing Team</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <div className="password-wrapper">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                id="password"
-                                placeholder="Create a password"
-                                value={password}
-                                onChange={onChange}
-                                required
-                                minLength="6"
-                            />
-                            <button
-                                type="button"
-                                className="password-toggle"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                            </button>
+
+                {step === 1 ? (
+                    <form className="signup-form" onSubmit={onSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="name">Full Name</label>
+                            <input type="text" id="name" placeholder="Enter your full name" value={name} onChange={onChange} required />
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="confirmPassword">Confirm Password</label>
-                        <div className="password-wrapper">
-                            <input
-                                type={showConfirmPassword ? "text" : "password"}
-                                id="confirmPassword"
-                                placeholder="Confirm your password"
-                                value={confirmPassword}
-                                onChange={onChange}
-                                required
-                                minLength="6"
-                            />
-                            <button
-                                type="button"
-                                className="password-toggle"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            >
-                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                            </button>
+                        <div className="form-group">
+                            <input type="email" id="email" placeholder="Enter your email" value={email} onChange={onChange} required />
                         </div>
-                    </div>
-                    <button type="submit" className="signup-btn">Sign Up</button>
-                </form>
+                        <div className="form-group">
+                            <label htmlFor="role">I am a...</label>
+                            <select id="role" value={role} onChange={onChange} className="role-select">
+                                <option value="Client">Client</option>
+                                <option value="Designer">Designer</option>
+                                <option value="Developer">Developer</option>
+                                <option value="Marketing Team">Marketing Team</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <div className="password-wrapper">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    placeholder="Create a password"
+                                    value={password}
+                                    onChange={onChange}
+                                    required
+                                    minLength="6"
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="confirmPassword">Confirm Password</label>
+                            <div className="password-wrapper">
+                                <input
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    id="confirmPassword"
+                                    placeholder="Confirm your password"
+                                    value={confirmPassword}
+                                    onChange={onChange}
+                                    required
+                                    minLength="6"
+                                />
+                                <button
+                                    type="button"
+                                    className="password-toggle"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" className="signup-btn" disabled={loading}>
+                            {loading ? 'Sending Code...' : 'Sign Up'}
+                        </button>
+                    </form>
+                ) : (
+                    <form className="signup-form" onSubmit={handleOtpVerify}>
+                        <div className="form-group">
+                            <label htmlFor="otp">Verification Code</label>
+                            <input
+                                type="text"
+                                id="otp"
+                                placeholder="Enter 6-digit code"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                                required
+                                className="otp-input"
+                                style={{ letterSpacing: '4px', textAlign: 'center', fontSize: '1.2rem' }}
+                            />
+                        </div>
+                        <button type="submit" className="signup-btn" disabled={loading}>
+                            {loading ? 'Verifying...' : 'Verify & Login'}
+                        </button>
+                        <button
+                            type="button"
+                            className="signup-btn"
+                            onClick={() => setStep(1)}
+                            style={{ background: 'transparent', border: '1px solid #fff', marginTop: '10px' }}
+                        >
+                            Back
+                        </button>
+                    </form>
+                )}
+
                 <div className="signup-footer">
                     <p>Already have an account? <Link to="/login" className="login-link">Login</Link></p>
                 </div>

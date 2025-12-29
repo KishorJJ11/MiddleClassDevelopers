@@ -79,7 +79,7 @@ const Login = () => {
                         <label className="remember-me">
                             <input type="checkbox" /> Remember me
                         </label>
-                        <Link to="#" className="forgot-password">Forgot Password?</Link>
+                        <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
                     </div>
                     <button type="submit" className="login-btn">Login</button>
                 </form>
