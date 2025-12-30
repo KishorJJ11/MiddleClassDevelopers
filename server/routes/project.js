@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Project = require('../models/Project');
+const auth = require('../middleware/auth');
+const User = require('../models/User');
 
 // @route   POST api/projects/track
 // @desc    Get project details by Unique ID
@@ -58,9 +60,6 @@ router.post('/create', async (req, res) => {
 // @route   POST api/projects/update
 // @desc    Add a status update to a project (Developer/Admin only)
 // @access  Private
-const auth = require('../middleware/auth'); // Import auth middleware locally or at top
-const User = require('../models/User'); // Import User to check role
-
 router.post('/update', auth, async (req, res) => {
     const { uniqueId, subject, message, status, progress } = req.body;
 
@@ -92,6 +91,25 @@ router.post('/update', auth, async (req, res) => {
         await project.save();
 
         res.json(project);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET api/projects/all
+// @desc    Get ALL projects (Developer/Admin only)
+// @access  Private
+router.get('/all', auth, async (req, res) => {
+    try {
+        // Verify User Role
+        const user = await User.findById(req.user.id);
+        if (user.role !== 'Developer' && user.role !== 'Admin' && user.email !== 'kishorjj05@gmail.com') {
+            return res.status(401).json({ msg: 'Not Authorized. Developers Only.' });
+        }
+
+        const projects = await Project.find().sort({ date: -1 }); // Newest first
+        res.json(projects);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
