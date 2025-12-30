@@ -89,14 +89,23 @@
     font-size: 3.8rem;
     margin-bottom: 20px;
     color: #FFD700;
-    /* Bright Gold */
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.4);
-    /* Glowing Effect */
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 800;
+    /* Professional Gold */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    /* Subtle Shadow */
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    /* Professional Case */
+    font-weight: 700;
     background: none;
-    -webkit-text-fill-color: initial;
+}
+
+@media screen and (max-width: 768px) {
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none !important;
+        /* Hide Arrows on Mobile */
+    }
 }
 
 .hero-content p {
