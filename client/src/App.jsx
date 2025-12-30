@@ -13,6 +13,7 @@ import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Services from './pages/Services';
 import TrackProject from './pages/TrackProject';
+import UpdateProjectStatus from './pages/UpdateProjectStatus';
 import ForgotPassword from './pages/ForgotPassword';
 import AdminDashboard from './pages/AdminDashboard';
 import { ToastContainer } from 'react-toastify';
@@ -36,6 +37,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/track-project' element={<TrackProject />} />
+        <Route path='/update-status' element={<UpdateProjectStatus />} />
         <Route path='/admin' element={<AdminDashboard />} />
       </Routes>
       <Footer />

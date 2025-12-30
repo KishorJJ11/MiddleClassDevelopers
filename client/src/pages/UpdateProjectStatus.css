@@ -1,0 +1,117 @@
+.update-status-container {
+    padding: 6rem 2rem 2rem;
+    min-height: 100vh;
+    background: #000;
+    /* Pure Black Background */
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.update-card {
+    background: rgba(255, 255, 255, 0.05);
+    /* Glassmorphism */
+    padding: 2.5rem;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.update-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.update-header h2 {
+    font-size: 2rem;
+    color: #D4AF37;
+    /* Gold Accent */
+    margin-bottom: 0.5rem;
+}
+
+.update-header p {
+    color: #a0a0b0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    /* Lighter background */
+    color: #000;
+    /* Black text */
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #D4AF37;
+    /* Gold Border on Focus */
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.range-input {
+    width: 100%;
+    cursor: pointer;
+}
+
+.update-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(to right, #D4AF37, #AA8C2C);
+    /* Gold Gradient */
+    color: #000;
+    /* Black Text for contrast */
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.update-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    /* Gold Shadow */
+}
+
+.update-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}

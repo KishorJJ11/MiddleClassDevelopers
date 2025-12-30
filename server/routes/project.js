@@ -55,5 +55,47 @@ router.post('/create', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route   POST api/projects/update
+// @desc    Add a status update to a project (Developer/Admin only)
+// @access  Private
+const auth = require('../middleware/auth'); // Import auth middleware locally or at top
+const User = require('../models/User'); // Import User to check role
+
+router.post('/update', auth, async (req, res) => {
+    const { uniqueId, subject, message, status, progress } = req.body;
+
+    try {
+        // Verify User Role
+        const user = await User.findById(req.user.id);
+        if (user.role !== 'Developer' && user.role !== 'Admin' && user.email !== 'kishorjj05@gmail.com') {
+            return res.status(401).json({ msg: 'Not Authorized. Developers Only.' });
+        }
+
+        const project = await Project.findOne({ uniqueId });
+
+        if (!project) {
+            return res.status(404).json({ msg: 'Project not found' });
+        }
+
+        const newUpdate = {
+            subject,
+            message,
+            date: Date.now()
+        };
+
+        project.updates.unshift(newUpdate); // Add to beginning
+
+        // Optional: Update Main Status/Progress if provided
+        if (status) project.status = status;
+        if (progress) project.progress = progress;
+
+        await project.save();
+
+        res.json(project);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;

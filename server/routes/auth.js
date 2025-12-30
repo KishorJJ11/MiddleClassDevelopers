@@ -87,7 +87,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1h' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+                res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
             }
         );
     } catch (err) {
@@ -103,7 +103,7 @@ const auth = require('../middleware/auth');
 router.get('/user', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
-        res.json(user);
+        res.json(user); // user object now includes role by default schema
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

@@ -37,6 +37,7 @@ const ProjectSchema = new mongoose.Schema({
     },
     updates: [
         {
+            subject: { type: String, required: true }, // Added Subject
             message: String,
             date: { type: Date, default: Date.now }
         }

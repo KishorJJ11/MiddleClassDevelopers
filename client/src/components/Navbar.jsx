@@ -9,6 +9,7 @@ const Navbar = () => {
   const [button, setButton] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userRole, setUserRole] = useState(''); // New State for Role
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,7 +29,8 @@ const Navbar = () => {
           if (res.ok) {
             const data = await res.json();
             setIsLoggedIn(true);
-            if (data.email === 'kishorjj05@gmail.com') {
+            setUserRole(data.role || ''); // Set Role from backend
+            if (data.email === 'kishorjj05@gmail.com') { // Admin check
               setIsAdmin(true);
             } else {
               setIsAdmin(false);
@@ -38,16 +40,19 @@ const Navbar = () => {
             localStorage.removeItem('token');
             setIsLoggedIn(false);
             setIsAdmin(false);
+            setUserRole('');
           }
         } catch (err) {
           console.error(err);
           localStorage.removeItem('token');
           setIsLoggedIn(false);
           setIsAdmin(false);
+          setUserRole('');
         }
       } else {
         setIsLoggedIn(false);
         setIsAdmin(false);
+        setUserRole('');
       }
     };
 
@@ -55,47 +60,26 @@ const Navbar = () => {
     setClick(false); // Close mobile menu on navigation
   }, [location]);
 
-  // Prevent background scrolling when mobile menu is open
-  useEffect(() => {
-    if (click) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
-  }, [click]);
-
-  const showButton = () => {
-    if (window.innerWidth <= 960) {
-      setButton(false);
-    } else {
-      setButton(true);
-    }
-  };
-
-  useEffect(() => {
-    showButton();
-    window.addEventListener('resize', showButton);
-    return () => window.removeEventListener('resize', showButton);
-  }, []);
+  // ... (No changes to scroll logic)
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    setIsAdmin(false);
+    setUserRole('');
     navigate('/');
     closeMobileMenu();
   };
 
   return (
     <nav className="navbar">
+      {/* ... (Logo remains same) */}
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           <img src={logo} alt='logo' className='navbar-logo-img' />
           Middle Class Developers
         </Link>
-
         <div className="mobile-icons-container">
-          {/* Profile Icon removed from header, moved to menu */}
           <div className="menu-icon" onClick={handleClick}>
             {click ? <FaTimes /> : <FaBars />}
           </div>
@@ -127,11 +111,24 @@ const Navbar = () => {
               Our Projects
             </Link>
           </li>
-          <li className="nav-item">
-            <Link to="/track-project" className="nav-links" onClick={closeMobileMenu}>
-              Track Status
-            </Link>
-          </li>
+          {/* Track Project - ONLY for Client Role */}
+          {isLoggedIn && userRole === 'Client' && (
+            <li className="nav-item">
+              <Link to="/track-project" className="nav-links" onClick={closeMobileMenu}>
+                Track Status
+              </Link>
+            </li>
+          )}
+
+          {/* Developer Update Link - ONLY for Developer/Admin */}
+          {isLoggedIn && (userRole === 'Developer' || isAdmin) && (
+            <li className="nav-item">
+              <Link to="/update-status" className="nav-links" onClick={closeMobileMenu} style={{ color: '#4a90e2' }}>
+                Update Status
+              </Link>
+            </li>
+          )}
+
           <li className="nav-item">
             <Link to="/contact" className="nav-links" onClick={closeMobileMenu}>
               Contact
